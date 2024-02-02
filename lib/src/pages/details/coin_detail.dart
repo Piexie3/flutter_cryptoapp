@@ -1,42 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cryptoapp/src/core/utils/loading.dart';
+import 'package:flutter_cryptoapp/src/pages/details/controller.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 
-class CoinDetailScreen extends StatelessWidget {
+class CoinDetailScreen extends GetView<DetailsController> {
   const CoinDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(
-                "https://images.unsplash.com/photo-1682686580950-960d1d513532?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHx8",
-              ),
-              radius: 45,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
+          child: Obx(
+        () => controller.isLoading.value
+            ? Container()
+            : Column(
                 children: [
-                  Text("Bitcon"),
-                  Text("(BTC)"),
-                  Spacer(),
-                  Text(
-                    "active",
-                    style: TextStyle(color: Colors.green),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      controller.coins?.logo ?? "",
+                    ),
+                    radius: 45,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        Text(controller.coins?.name ?? ""),
+                        Text("(${controller.coins?.symbol})"),
+                        Spacer(),
+                        Text(
+                          controller.coins!.isActive == true
+                              ? "active"
+                              : "inactive",
+                          style: controller.coins!.isActive == true
+                              ? TextStyle(color: Colors.green)
+                              : TextStyle(color: Colors.red),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    child: Text(controller.coins?.description ?? ""),
                   )
                 ],
               ),
-            ),
-            SizedBox(
-              child: Text(
-                  "Bitcoin is a cryptocurrency and worldwide payment system. It is the first decentralized digital currency, as the system works without a central bank or single administrator."),
-            )
-          ],
-        ),
-      ),
+      )),
     ));
   }
 }
