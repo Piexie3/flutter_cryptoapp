@@ -17,14 +17,16 @@ class Coin {
     this.type,
   });
 
-  Coin.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    symbol = json['symbol'];
-    rank = json['rank'];
-    isNew = json['is_new'];
-    isActive = json['is_active'];
-    type = json['type'];
+  Coin.fromJson(List<Map<String, dynamic>> json) {
+    json.map((e) {
+      id = e['id'];
+      name = e['name'];
+      symbol = e['symbol'];
+      rank = e['rank'];
+      isNew = e['is_new'];
+      isActive = e['is_active'];
+      type = e['type'];
+    });
   }
 
   Map<String, dynamic> toJson() {

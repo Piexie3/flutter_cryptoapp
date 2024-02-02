@@ -9,52 +9,56 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(
-        () => controller.isLoading.value
-            ? CustomScrollView(
-                slivers: [
-                  const SliverAppBar(
-                    title: Text("CryptoApp"),
-                  ),
-                  SliverList.builder(
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 20,
+      body: Obx(() => controller.isLoading.value
+          ? Container()
+          : CustomScrollView(
+              slivers: [
+                const SliverAppBar(
+                  title: Text("CryptoApp"),
+                ),
+                SliverList.builder(
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 20,
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColor.scaffoldBackground,
+                        border: Border.all(
+                          color: AppColor.secondaryColor,
                         ),
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColor.scaffoldBackground,
-                          border: Border.all(
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(
                             color: AppColor.secondaryColor,
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: AppColor.secondaryColor,
-                              spreadRadius: 1,
-                              blurRadius: 2,
-                            )
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              controller.coins?[index]?.name ?? "",
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  )
-                ],
-              )
-            : Container(),
-      ),
+                            spreadRadius: 1,
+                            blurRadius: 2,
+                          )
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            // controller.coins?[index].name ?? "",
+                            "Bitcoin",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                )
+              ],
+            )),
     );
   }
 }

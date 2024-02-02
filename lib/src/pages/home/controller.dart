@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   var isLoading = false.obs;
-  List<Coin?>? coins;
+  Coin? coins;
 
   @override
   Future<void> onInit() async {
@@ -16,14 +16,13 @@ class HomeController extends GetxController {
 
   Future<void> getAllCoins() async {
     isLoading.value = true;
-    print(".....  home controller");
     Loading.show();
-    print(".....  home controller2");
     try {
       var res = await HttpUtil().get(
         "coins",
       );
-      coins = res;
+      print("data: $res");
+      coins = Coin.fromJson(res);
       Loading.dismiss();
       isLoading.value = false;
     } on DioException catch (e) {

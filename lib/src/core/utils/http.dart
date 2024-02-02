@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_cryptoapp/src/core/common/constants.dart';
 import 'package:flutter_cryptoapp/src/core/utils/loading.dart';
-import 'package:get/get.dart';
 
 class HttpUtil {
   static final HttpUtil _instance = HttpUtil._internal();
