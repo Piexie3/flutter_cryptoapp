@@ -10,43 +10,45 @@ class CoinDetailScreen extends GetView<DetailsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Obx(
-        () => controller.isLoading.value
-            ? Container()
-            : Column(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      controller.coins?.logo ?? "",
-                    ),
-                    radius: 45,
+            () => controller.isLoading.value
+                ? Container()
+                : Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          controller.coins?.logo ?? "",
+                        ),
+                        radius: 45,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          children: [
+                            Text(controller.coins?.name ?? ""),
+                            Text("(${controller.coins?.symbol})"),
+                            Spacer(),
+                            Text(
+                              controller.coins!.isActive == true
+                                  ? "active"
+                                  : "inactive",
+                              style: controller.coins!.isActive == true
+                                  ? TextStyle(color: Colors.green)
+                                  : TextStyle(color: Colors.red),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        child: Text(controller.coins?.description ?? ""),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        Text(controller.coins?.name ?? ""),
-                        Text("(${controller.coins?.symbol})"),
-                        Spacer(),
-                        Text(
-                          controller.coins!.isActive == true
-                              ? "active"
-                              : "inactive",
-                          style: controller.coins!.isActive == true
-                              ? TextStyle(color: Colors.green)
-                              : TextStyle(color: Colors.red),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    child: Text(controller.coins?.description ?? ""),
-                  )
-                ],
-              ),
-      )),
-    ));
+          ),
+        ),
+      ),
+    );
   }
 }

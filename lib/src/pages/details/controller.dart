@@ -20,7 +20,7 @@ class DetailsController extends GetxController {
     Loading.show();
     try {
       var res = await HttpUtil().get(
-        "coins/btc-bitcoin",
+        "coins/eth-ethereum",
       );
       print("data: $res");
       coins = CoinDetails.fromJson(res);
