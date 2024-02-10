@@ -1,43 +1,29 @@
 class Coin {
-  String? id;
-  String? name;
-  String? symbol;
-  int? rank;
-  bool? isNew;
-  bool? isActive;
-  String? type;
+  final String id;
+  final String name;
+  final String symbol;
+  final int rank;
+  final bool isNew;
+  final bool isActive;
+  final String type;
 
   Coin({
-    this.id,
-    this.name,
-    this.symbol,
-    this.rank,
-    this.isNew,
-    this.isActive,
-    this.type,
+    required this.id,
+    required this.name,
+    required this.symbol,
+    required this.rank,
+    required this.isNew,
+    required this.isActive,
+    required this.type,
   });
 
-  Coin.fromJson(List<Map<String, dynamic>> json) {
-    json.map((e) {
-      id = e['id'];
-      name = e['name'];
-      symbol = e['symbol'];
-      rank = e['rank'];
-      isNew = e['is_new'];
-      isActive = e['is_active'];
-      type = e['type'];
-    });
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['symbol'] = symbol;
-    data['rank'] = rank;
-    data['is_new'] = isNew;
-    data['is_active'] = isActive;
-    data['type'] = type;
-    return data;
-  }
+  factory Coin.fromJson(Map<String, dynamic> json) => Coin(
+        id: json['id'] as String,
+        name: json['name'] as String,
+        symbol: json['symbol'] as String,
+        rank: json['rank'] as int,
+        isNew: json['is_new'] as bool,
+        isActive: json['is_active'] as bool,
+        type: json['type'] as String,
+      );
 }
