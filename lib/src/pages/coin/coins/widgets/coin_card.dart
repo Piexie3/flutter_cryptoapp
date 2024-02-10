@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cryptoapp/src/pages/models/coin.dart';
 
 class CoinCard extends StatelessWidget {
-  final int index;
+  final Coin data;
   const CoinCard({
     super.key,
-    required this.index,
+    required this.data,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListTile(
-        title: Row(
+    return ListTile(
+      title: SizedBox(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              "Bitcoin",
-              style: TextStyle(
-                fontFamily: "Robonto",
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
+            SizedBox(
+              child: Text(
+                data.name,
+                style: const TextStyle(
+                  fontFamily: "Robonto",
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
             Container(
               margin: const EdgeInsets.all(5),
               padding: const EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
-                color: Colors.white24,
+                color: data.type == "coin"
+                    ? Colors.white24
+                    : Colors.greenAccent[150],
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text(
-                "COIN",
-                style: TextStyle(
+              child: Text(
+                (data.type).toUpperCase(),
+                style: const TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 14,
                 ),
@@ -39,53 +44,55 @@ class CoinCard extends StatelessWidget {
             )
           ],
         ),
-        leading: Container(
-          height: 50,
-          width: 50,
-          decoration: const BoxDecoration(
-            color: Colors.white12,
-            shape: BoxShape.circle,
-          ),
-          child: Stack(
-            children: [
-              const Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "B",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18,
-                  ),
+      ),
+      leading: Container(
+        height: 50,
+        width: 50,
+        decoration: const BoxDecoration(
+          color: Colors.white12,
+          shape: BoxShape.circle,
+        ),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                data.name.characters.first,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 18,
                 ),
               ),
-              Positioned(
-                  top: 5,
-                  right: 0,
-                  child: Container(
-                    height: 15,
-                    width: 15,
-                    decoration: const BoxDecoration(
-                      color: Colors.white60,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "$index",
-                        style: const TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+            Positioned(
+                top: 5,
+                right: 0,
+                child: Container(
+                  height: 15,
+                  width: 15,
+                  decoration: const BoxDecoration(
+                    color: Colors.white38,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      (data.rank).toString(),
+                      style: const TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ))
-            ],
-          ),
+                  ),
+                ))
+          ],
         ),
-        subtitle: const Text(
-          "BTC",
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 12,
-          ),
+      ),
+      subtitle: Text(
+        data.symbol,
+        style: const TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 12,
         ),
       ),
     );
