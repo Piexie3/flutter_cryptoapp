@@ -190,15 +190,41 @@ class HttpUtil {
     return headers;
   }
 
+  // GET -fetch data from database
+  //POST - upload data
+  //DELETE - delete data from database
+  //PUT- update data
+
   /// restful get operation
   /// refresh whether to pull down to refresh, default false
   /// noCache Whether not to cache, default true
   /// Is list a list? Default false
   /// cacheKey cache key
   /// cacheDisk whether disk cache
+  ///
+
+  //  Parameters
+  //https://api.coinpaprika.com/v1/?project=speedy-backbone-347809&api-key=hhejkkdj&page=juuru
+  /*
+  queryParameters:  {
+    "project": "speedy-backbone-347809",
+    "api-key": "hhejkkdj",
+    }
+  */
+
+  //http://app.innovators.must.ke/
+  // http://students.must.ke/
+
+  /*
+  options: BaseOptions(
+    
+      baseUrl: http://students.must.ke/,
+)
+   */
   Future get(
     String path, {
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? data,
     Options? options,
     bool refresh = false,
     bool noCache = !CACHE_ENABLE,
@@ -228,6 +254,7 @@ class HttpUtil {
       queryParameters: queryParameters,
       options: options,
       cancelToken: cancelToken,
+      data: data,
     );
     return response.data;
   }
