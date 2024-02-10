@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_cryptoapp/src/core/common/constants.dart';
-import 'package:flutter_cryptoapp/src/core/utils/loading.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class HttpUtil {
   static final HttpUtil _instance = HttpUtil._internal();
@@ -69,9 +71,9 @@ class HttpUtil {
       },
       onError: (DioException e, handler) {
         // Do something with response error
-        Loading.dismiss();
-        // ErrorEntity eInfo = createErrorEntity(e);
-        // onError(eInfo);
+
+        ErrorEntity eInfo = createErrorEntity(e);
+        onError(eInfo);
         return handler.next(e); //continue
         // If you want to complete the request and return some custom data, you can resolve a `Response`, such as `handler.resolve(response)`.
         // In this way, the request will be terminated, the upper layer then will be called, and the data returned in then will be your custom response.
@@ -83,21 +85,21 @@ class HttpUtil {
    * Unified processing of errors
    */
 
-  // // error handling
-  // void onError(ErrorEntity eInfo) {
-  //   print('error.code -> ${eInfo.code}, error.message -> ${eInfo.message}');
+  // error handling
+  void onError(ErrorEntity eInfo) {
+    print('error.code -> ${eInfo.code}, error.message -> ${eInfo.message}');
 
-  //   // EasyLoading.init();
-  //   switch (eInfo.code) {
-  //     case 401:
-  //       UserStore.to.onLogout();
-  //       EasyLoading.showError(eInfo.message);
-  //       break;
-  //     default:
-  //       EasyLoading.showError('unknown error');
-  //       break;
-  //   }
-  // }
+    // EasyLoading.init();
+    switch (eInfo.code) {
+      case 401:
+        // UserStore.to.onLogout();
+        EasyLoading.showError(eInfo.message);
+        break;
+      default:
+        EasyLoading.showError('unknown error');
+        break;
+    }
+  }
 
   // error message
 
@@ -169,18 +171,24 @@ class HttpUtil {
     }
   }
 
+/*
+    * Cancel request
+    *
+    * The same cancel token can be used for multiple requests. When a cancel token is canceled, all requests using this cancel token will be cancelled.
+    * So the parameters are optional
+    */
   void cancelRequests(CancelToken token) {
     token.cancel("cancelled");
   }
 
-  // /// Read local configuration
-  // Map<String, dynamic>? getAuthorizationHeader() {
-  //   var headers = <String, dynamic>{};
-  //   if (Get.isRegistered<UserStore>() && UserStore.to.hasToken == true) {
-  //     headers['Authorization'] = 'Bearer ${UserStore.to.token}';
-  //   }
-  //   return headers;
-  // }
+  /// Read local configuration
+  Map<String, dynamic>? getAuthorizationHeader() {
+    var headers = <String, dynamic>{};
+    // if (Get.isRegistered<UserStore>() && UserStore.to.hasToken == true) {
+    //   headers['Authorization'] = 'Bearer ${UserStore.to.token}';
+    // }
+    return headers;
+  }
 
   /// restful get operation
   /// refresh whether to pull down to refresh, default false
@@ -210,11 +218,157 @@ class HttpUtil {
       "cacheDisk": cacheDisk,
     });
     requestOptions.headers = requestOptions.headers ?? {};
+    Map<String, dynamic>? authorization = getAuthorizationHeader();
+    if (authorization != null) {
+      requestOptions.headers!.addAll(authorization);
+    }
 
     var response = await dio.get(
       path,
       queryParameters: queryParameters,
       options: options,
+      cancelToken: cancelToken,
+    );
+    return response.data;
+  }
+
+  /// restful post operation
+  Future post(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    Options requestOptions = options ?? Options();
+    requestOptions.headers = requestOptions.headers ?? {};
+    Map<String, dynamic>? authorization = getAuthorizationHeader();
+    if (authorization != null) {
+      requestOptions.headers!.addAll(authorization);
+    }
+    var response = await dio.post(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
+    return response.data;
+  }
+
+  /// restful put operation
+  Future put(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    Options requestOptions = options ?? Options();
+    requestOptions.headers = requestOptions.headers ?? {};
+    Map<String, dynamic>? authorization = getAuthorizationHeader();
+    if (authorization != null) {
+      requestOptions.headers!.addAll(authorization);
+    }
+    var response = await dio.put(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
+    return response.data;
+  }
+
+  /// restful patch operation
+  Future patch(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    Options requestOptions = options ?? Options();
+    requestOptions.headers = requestOptions.headers ?? {};
+    Map<String, dynamic>? authorization = getAuthorizationHeader();
+    if (authorization != null) {
+      requestOptions.headers!.addAll(authorization);
+    }
+    var response = await dio.patch(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
+    return response.data;
+  }
+
+  /// restful delete operation
+  Future delete(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    Options requestOptions = options ?? Options();
+    requestOptions.headers = requestOptions.headers ?? {};
+    Map<String, dynamic>? authorization = getAuthorizationHeader();
+    if (authorization != null) {
+      requestOptions.headers!.addAll(authorization);
+    }
+    var response = await dio.delete(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
+    return response.data;
+  }
+
+  /// restful post form form submission operation
+  Future postForm(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    Options requestOptions = options ?? Options();
+    requestOptions.headers = requestOptions.headers ?? {};
+    Map<String, dynamic>? authorization = getAuthorizationHeader();
+    if (authorization != null) {
+      requestOptions.headers!.addAll(authorization);
+    }
+    var response = await dio.post(
+      path,
+      data: FormData.fromMap(data),
+      queryParameters: queryParameters,
+      options: requestOptions,
+      cancelToken: cancelToken,
+    );
+    return response.data;
+  }
+
+  /// restful post Stream  data
+  Future postStream(
+    String path, {
+    dynamic data,
+    int dataLength = 0,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    Options requestOptions = options ?? Options();
+    requestOptions.headers = requestOptions.headers ?? {};
+    Map<String, dynamic>? authorization = getAuthorizationHeader();
+    if (authorization != null) {
+      requestOptions.headers!.addAll(authorization);
+    }
+    requestOptions.headers!.addAll({
+      Headers.contentLengthHeader: dataLength.toString(),
+    });
+    var response = await dio.post(
+      path,
+      data: Stream.fromIterable(data.map((e) => [e])),
+      queryParameters: queryParameters,
+      options: requestOptions,
       cancelToken: cancelToken,
     );
     return response.data;
