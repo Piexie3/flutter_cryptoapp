@@ -29,9 +29,8 @@ class CoinCard extends StatelessWidget {
               margin: const EdgeInsets.all(5),
               padding: const EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
-                color: data.type == "coin"
-                    ? Colors.white24
-                    : Colors.greenAccent[150],
+                color:
+                    data.type == "coin" ? Colors.white24 : Colors.greenAccent,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
@@ -79,7 +78,7 @@ class CoinCard extends StatelessWidget {
                     child: Text(
                       (data.rank).toString(),
                       style: const TextStyle(
-                        color: Colors.green,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

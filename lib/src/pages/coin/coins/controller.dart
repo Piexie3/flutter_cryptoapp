@@ -7,7 +7,7 @@ import 'package:flutter_cryptoapp/src/pages/models/coin.dart';
 import 'package:get/get.dart';
 
 class CoinsController extends GetxController {
-  Future<List<Coin>>? coins;
+  Future<List<Coin>>? coinDetail;
 
   Future<List<Coin>> getAllCoins() async {
     try {
