@@ -1,60 +1,104 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_cryptoapp/src/core/utils/loading.dart';
 import 'package:flutter_cryptoapp/src/pages/coin/coins/controller.dart';
 import 'package:flutter_cryptoapp/src/pages/coin/coins/widgets/coin_card.dart';
+import 'package:flutter_cryptoapp/src/pages/coin/details/coin_detail.dart';
+import 'package:flutter_cryptoapp/src/pages/models/coin.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
-class Coinlist extends StatelessWidget {
+class Coinlist extends StatefulWidget {
   const Coinlist({super.key});
-//   void search(String query) {
-//   // Filter the list of coins based on the query
-//   var results = coins.where((coin) => coin.name.contains(query)).toList();
 
-//   // Update the state to reflect the search results
-//   searchResults.value = results;
-// }
+  @override
+  State<Coinlist> createState() => _CoinlistState();
+}
+
+class _CoinlistState extends State<Coinlist> {
+  Future<List<Coin>>? _cryptocurrencyData;
+
+  @override
+  void initState() {
+    super.initState();
+    // Choose whether to fetch data from API or use static data
+    _cryptocurrencyData = fetchData(); // Or: List.of(cryptocurrencyData);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-          //  Obx(() => controller.isLoading.value
-          //     ? Container()
-          //     :
-
-          CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            centerTitle: false,
-            title: const Text(
-              "Coins",
-              style: TextStyle(
-                fontFamily: "Robonto",
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            bottom: AppBar(
-              centerTitle: true,
-              title: SearchBar(
-                hintText: "Search...",
-                onSubmitted: (searchResult) {},
-                trailing: [
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.search))
-                ],
-              ),
-            ),
-          ),
-          SliverList.builder(
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return CoinCard(
-                index: index,
-              );
-              // return;
-            },
-          )
-        ],
-        // ),
+      body: FutureBuilder<List<Coin>>(
+        future: _cryptocurrencyData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final coin = snapshot.data!;
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  centerTitle: false,
+                  title: const Text(
+                    "Coins",
+                    style: TextStyle(
+                      fontFamily: "Robonto",
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  bottom: AppBar(
+                    centerTitle: true,
+                    title: SearchBar(
+                      hintText: "Search...",
+                      onSubmitted: (searchResult) {},
+                      trailing: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.search),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                SliverList.builder(
+                  itemCount: coin.length,
+                  itemBuilder: (context, index) {
+                    final data = coin[index];
+                    return GestureDetector(
+                      onTap: () => Get.to(
+                        CoinDetailScreen(
+                          id: data.id,
+                        ),
+                      ),
+                      child: CoinCard(
+                        data: data,
+                      ),
+                    );
+                  },
+                )
+              ],
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
+  }
+
+  Future<List<Coin>> fetchData() async {
+    final response =
+        await http.get(Uri.parse('https://api.coinpaprika.com/v1/coins'));
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as List<dynamic>;
+      return json.map((e) => Coin.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to fetch data');
+    }
   }
 }
