@@ -117,6 +117,51 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
                         ],
                       ),
                     ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Wrap(
+                      children: List.generate(
+                        data?.tags?.length ?? 0,
+                        (index) => Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 7,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 3),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.purple,
+                              ),
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Text(
+                            data?.tags?[index].name ?? "",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        "Links",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blue)),
+                        )
+                      ],
+                    ),
                   )
                 ],
               );
