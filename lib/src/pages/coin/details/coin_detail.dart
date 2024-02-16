@@ -81,11 +81,13 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white30,
+                            color: data?.type == "coin"
+                                ? Colors.white30
+                                : Colors.green,
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
-                            data?.symbol ?? "",
+                            data?.type ?? "",
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 14,
@@ -154,13 +156,76 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blue)),
-                        )
-                      ],
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          LinkWidget(
+                            text: "Explore",
+                            ontap: () {},
+                          ),
+                          LinkWidget(
+                            text: "Facebook",
+                            ontap: () {},
+                          ),
+                          LinkWidget(
+                            text: "Reddit",
+                            ontap: () {},
+                          ),
+                          LinkWidget(
+                            text: "Source code",
+                            ontap: () {},
+                          ),
+                          LinkWidget(
+                            text: "Website",
+                            ontap: () {},
+                          ),
+                          LinkWidget(
+                            text: "Youtube",
+                            ontap: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        "Team",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: List.generate(
+                        data?.team?.length ?? 0,
+                        (index) => ListTile(
+                          leading: Container(
+                            height: 50,
+                            width: 50,
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white12,
+                            ),
+                            child: const Icon(
+                              Icons.person,
+                              color: Colors.white,
+                            ),
+                          ),
+                          title: Text(
+                            data?.team?[index].name ?? "",
+                          ),
+                          subtitle: Text(
+                            data?.team?[index].position ?? "",
+                          ),
+                        ),
+                      ),
                     ),
                   )
                 ],
@@ -188,5 +253,41 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
     } else {
       throw Exception('Failed to fetch data');
     }
+  }
+}
+
+class LinkWidget extends StatelessWidget {
+  final String text;
+  final VoidCallback ontap;
+  const LinkWidget({
+    super.key,
+    required this.text,
+    required this.ontap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: ontap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 4,
+          vertical: 4,
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Colors.blue,
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.blue,
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_cryptoapp/src/core/utils/loading.dart';
-import 'package:flutter_cryptoapp/src/pages/coin/coins/controller.dart';
 import 'package:flutter_cryptoapp/src/pages/coin/coins/widgets/coin_card.dart';
 import 'package:flutter_cryptoapp/src/pages/coin/details/coin_detail.dart';
+import 'package:flutter_cryptoapp/src/pages/conversion/conversion.dart';
+import 'package:flutter_cryptoapp/src/pages/conversion/exchange_page.dart';
 import 'package:flutter_cryptoapp/src/pages/models/coin.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -46,6 +46,20 @@ class _CoinlistState extends State<Coinlist> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  actions: [
+                    IconButton(
+                      onPressed: () => Get.to(const ConversionScreen()),
+                      icon: const Icon(
+                        Icons.currency_exchange,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Get.to(const Exchangecreen()),
+                      icon: const Icon(
+                        Icons.change_circle,
+                      ),
+                    ),
+                  ],
                   bottom: AppBar(
                     centerTitle: true,
                     title: SearchBar(
@@ -83,7 +97,7 @@ class _CoinlistState extends State<Coinlist> {
               child: Text(snapshot.error.toString()),
             );
           }
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },
@@ -94,6 +108,7 @@ class _CoinlistState extends State<Coinlist> {
   Future<List<Coin>> fetchData() async {
     final response =
         await http.get(Uri.parse('https://api.coinpaprika.com/v1/coins'));
+
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as List<dynamic>;
       return json.map((e) => Coin.fromJson(e)).toList();
