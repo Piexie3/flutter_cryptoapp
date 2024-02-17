@@ -111,6 +111,7 @@ class _CoinlistState extends State<Coinlist> {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as List<dynamic>;
+      // print("...json data : $json ...");
       return json.map((e) => Coin.fromJson(e)).toList();
     } else {
       throw Exception('Failed to fetch data');

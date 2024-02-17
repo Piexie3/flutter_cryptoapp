@@ -16,7 +16,7 @@ class CoinDetailScreen extends StatefulWidget {
 }
 
 class _CoinDetailScreenState extends State<CoinDetailScreen> {
-  Future<CoinDetails>? _coindetail;
+  Future<CoinDetail>? _coindetail;
   @override
   void initState() {
     super.initState();
@@ -27,7 +27,7 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: FutureBuilder<CoinDetails>(
+        child: FutureBuilder<CoinDetail>(
           future: _coindetail,
           builder: (context, snapshot) {
             final data = snapshot.data;
@@ -244,12 +244,12 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
     );
   }
 
-  Future<CoinDetails> fetchCoinDetail() async {
+  Future<CoinDetail> fetchCoinDetail() async {
     final response = await http
         .get(Uri.parse('https://api.coinpaprika.com/v1/coins/${widget.id}'));
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-      return CoinDetails.fromJson(json);
+      return CoinDetail.fromJson(json);
     } else {
       throw Exception('Failed to fetch data');
     }

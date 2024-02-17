@@ -1,4 +1,4 @@
-class CoinDetails {
+class CoinDetail {
   String? id;
   String? name;
   String? symbol;
@@ -6,7 +6,11 @@ class CoinDetails {
   bool? isNew;
   bool? isActive;
   String? type;
+  String? contract;
+  String? platform;
+  List<Contracts>? contracts;
   String? logo;
+  Parent? parent;
   List<Tags>? tags;
   List<Team>? team;
   String? description;
@@ -24,7 +28,7 @@ class CoinDetails {
   String? firstDataAt;
   String? lastDataAt;
 
-  CoinDetails(
+  CoinDetail(
       {this.id,
       this.name,
       this.symbol,
@@ -32,7 +36,11 @@ class CoinDetails {
       this.isNew,
       this.isActive,
       this.type,
+      this.contract,
+      this.platform,
+      this.contracts,
       this.logo,
+      this.parent,
       this.tags,
       this.team,
       this.description,
@@ -50,7 +58,7 @@ class CoinDetails {
       this.firstDataAt,
       this.lastDataAt});
 
-  CoinDetails.fromJson(Map<String, dynamic> json) {
+  CoinDetail.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     symbol = json['symbol'];
@@ -58,17 +66,27 @@ class CoinDetails {
     isNew = json['is_new'];
     isActive = json['is_active'];
     type = json['type'];
+    contract = json['contract'];
+    platform = json['platform'];
+    if (json['contracts'] != null) {
+      contracts = <Contracts>[];
+      json['contracts'].forEach((v) {
+        contracts!.add(new Contracts.fromJson(v));
+      });
+    }
     logo = json['logo'];
+    parent =
+        json['parent'] != null ? new Parent.fromJson(json['parent']) : null;
     if (json['tags'] != null) {
       tags = <Tags>[];
       json['tags'].forEach((v) {
-        tags!.add(Tags.fromJson(v));
+        tags!.add(new Tags.fromJson(v));
       });
     }
     if (json['team'] != null) {
       team = <Team>[];
       json['team'].forEach((v) {
-        team!.add(Team.fromJson(v));
+        team!.add(new Team.fromJson(v));
       });
     }
     description = json['description'];
@@ -80,15 +98,15 @@ class CoinDetails {
     proofType = json['proof_type'];
     orgStructure = json['org_structure'];
     hashAlgorithm = json['hash_algorithm'];
-    links = json['links'] != null ? Links.fromJson(json['links']) : null;
+    links = json['links'] != null ? new Links.fromJson(json['links']) : null;
     if (json['links_extended'] != null) {
       linksExtended = <LinksExtended>[];
       json['links_extended'].forEach((v) {
-        linksExtended!.add(LinksExtended.fromJson(v));
+        linksExtended!.add(new LinksExtended.fromJson(v));
       });
     }
     whitepaper = json['whitepaper'] != null
-        ? Whitepaper.fromJson(json['whitepaper'])
+        ? new Whitepaper.fromJson(json['whitepaper'])
         : null;
     firstDataAt = json['first_data_at'];
     lastDataAt = json['last_data_at'];
@@ -103,7 +121,15 @@ class CoinDetails {
     data['is_new'] = isNew;
     data['is_active'] = isActive;
     data['type'] = type;
+    data['contract'] = contract;
+    data['platform'] = platform;
+    if (contracts != null) {
+      data['contracts'] = contracts!.map((v) => v.toJson()).toList();
+    }
     data['logo'] = logo;
+    if (parent != null) {
+      data['parent'] = parent!.toJson();
+    }
     if (tags != null) {
       data['tags'] = tags!.map((v) => v.toJson()).toList();
     }
@@ -130,6 +156,50 @@ class CoinDetails {
     }
     data['first_data_at'] = firstDataAt;
     data['last_data_at'] = lastDataAt;
+    return data;
+  }
+}
+
+class Contracts {
+  String? contract;
+  String? platform;
+  String? type;
+
+  Contracts({this.contract, this.platform, this.type});
+
+  Contracts.fromJson(Map<String, dynamic> json) {
+    contract = json['contract'];
+    platform = json['platform'];
+    type = json['type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['contract'] = contract;
+    data['platform'] = platform;
+    data['type'] = type;
+    return data;
+  }
+}
+
+class Parent {
+  String? id;
+  String? name;
+  String? symbol;
+
+  Parent({this.id, this.name, this.symbol});
+
+  Parent.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    symbol = json['symbol'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['symbol'] = symbol;
     return data;
   }
 }
@@ -185,23 +255,16 @@ class Links {
   List<String>? explorer;
   List<String>? facebook;
   List<String>? reddit;
-  List<String>? sourceCode;
   List<String>? website;
   List<String>? youtube;
 
   Links(
-      {this.explorer,
-      this.facebook,
-      this.reddit,
-      this.sourceCode,
-      this.website,
-      this.youtube});
+      {this.explorer, this.facebook, this.reddit, this.website, this.youtube});
 
   Links.fromJson(Map<String, dynamic> json) {
     explorer = json['explorer'].cast<String>();
     facebook = json['facebook'].cast<String>();
     reddit = json['reddit'].cast<String>();
-    sourceCode = json['source_code'].cast<String>();
     website = json['website'].cast<String>();
     youtube = json['youtube'].cast<String>();
   }
@@ -211,7 +274,6 @@ class Links {
     data['explorer'] = explorer;
     data['facebook'] = facebook;
     data['reddit'] = reddit;
-    data['source_code'] = sourceCode;
     data['website'] = website;
     data['youtube'] = youtube;
     return data;
@@ -228,7 +290,7 @@ class LinksExtended {
   LinksExtended.fromJson(Map<String, dynamic> json) {
     url = json['url'];
     type = json['type'];
-    stats = json['stats'] != null ? Stats.fromJson(json['stats']) : null;
+    stats = json['stats'] != null ? new Stats.fromJson(json['stats']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -244,24 +306,18 @@ class LinksExtended {
 
 class Stats {
   int? subscribers;
-  int? contributors;
-  int? stars;
   int? followers;
 
-  Stats({this.subscribers, this.contributors, this.stars, this.followers});
+  Stats({this.subscribers, this.followers});
 
   Stats.fromJson(Map<String, dynamic> json) {
     subscribers = json['subscribers'];
-    contributors = json['contributors'];
-    stars = json['stars'];
     followers = json['followers'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['subscribers'] = subscribers;
-    data['contributors'] = contributors;
-    data['stars'] = stars;
     data['followers'] = followers;
     return data;
   }
@@ -279,7 +335,7 @@ class Whitepaper {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['link'] = link;
     data['thumbnail'] = thumbnail;
     return data;

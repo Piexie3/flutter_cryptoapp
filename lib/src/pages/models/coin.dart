@@ -18,12 +18,12 @@ class Coin {
   });
 
   factory Coin.fromJson(Map<String, dynamic> json) => Coin(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        symbol: json['symbol'] as String,
-        rank: json['rank'] as int,
-        isNew: json['is_new'] as bool,
-        isActive: json['is_active'] as bool,
-        type: json['type'] as String,
+        id: json['id'],
+        name: json['name'],
+        symbol: json['symbol'],
+        rank: json['rank'],
+        isNew: json['is_new'],
+        isActive: json['is_active'],
+        type: json['type'],
       );
 }
