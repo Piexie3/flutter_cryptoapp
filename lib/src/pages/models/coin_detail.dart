@@ -335,7 +335,7 @@ class Whitepaper {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['link'] = link;
     data['thumbnail'] = thumbnail;
     return data;

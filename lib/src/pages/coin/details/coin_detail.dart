@@ -47,7 +47,7 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
                           ),
                         ),
                         Text(
-                          "(${data?.symbol})",
+                          "(${data?.symbol ?? ""})",
                           style: const TextStyle(
                             fontWeight: FontWeight.w300,
                             color: Colors.greenAccent,
