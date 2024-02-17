@@ -41,112 +41,21 @@ class _ExchangecreenState extends State<Exchangecreen> {
           print("snapshot $snapshot");
           if (snapshot.hasData) {
             final exchange = snapshot.data!;
-            return Column(
-              children: List.generate(
-                exchange.length,
-                (index) => Container(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            exchange[index].name ?? "",
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: exchange[index].active == true
-                                  ? Colors.greenAccent[200]
-                                  : Colors.redAccent[100],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              exchange[index].active == true
-                                  ? "Active"
-                                  : "Inactive",
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            child: Column(
-                              children: [
-                                Text("Adjusted Rank"),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white12,
-                                  ),
-                                  child: Text(
-                                    exchange[index].adjustedRank.toString(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Column(
-                              children: [
-                                Text("Reported Rank"),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white12,
-                                  ),
-                                  child: Text(
-                                    exchange[index].reportedRank.toString(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Column(
-                              children: [
-                                Text("Markets"),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white12,
-                                  ),
-                                  child: Text(
-                                    exchange[index].markets.toString(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Column(
-                              children: [
-                                Text("Currencies"),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white12,
-                                  ),
-                                  child: Text(
-                                    exchange[index].currencies.toString(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
+            return CustomScrollView(
+              slivers: [
+                SliverList.builder(
+                  itemBuilder: (context, index) {
+                    return ExchangeCard(exchange, index);
+                  },
+                )
+              ],
             );
+            // return Column(
+            //   children: List.generate(
+            //     exchange.length,
+            //     (index) => ExchangeCard(exchange, index),
+            //   ),
+            // );
           } else if (snapshot.hasError) {
             return Center(
               child: Text(snapshot.error.toString()),
@@ -156,6 +65,133 @@ class _ExchangecreenState extends State<Exchangecreen> {
             child: CircularProgressIndicator(),
           );
         },
+      ),
+    );
+  }
+
+  Container ExchangeCard(List<Exchange> exchange, int index) {
+    return Container(
+      margin: EdgeInsets.symmetric(
+        vertical: 10,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                exchange[index].name ?? "",
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: exchange[index].active == true
+                      ? Colors.greenAccent[200]
+                      : Colors.redAccent[100],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  exchange[index].active == true ? "Active" : "Inactive",
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: exchange[index].active == true
+                          ? Colors.green
+                          : Colors.white),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.24,
+                child: Text("Adjusted Rank"),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.24,
+                child: Text("Reported rank"),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.24,
+                child: Text("Markets"),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.24,
+                child: Text("Currencies"),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.24,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white12,
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    (exchange[index].adjustedRank ?? 0).toString(),
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.24,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white12,
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    (exchange[index].reportedRank ?? 0).toString(),
+                  ),
+                ),
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width * 0.24,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white12,
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      exchange[index].markets.toString(),
+                    ),
+                  )),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.24,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white12,
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    exchange[index].currencies.toString(),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
