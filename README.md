@@ -25,13 +25,13 @@ To get more information about the api we are using (click here)[api.coinpaprika.
 
 # Features of application
 
-[x] Getx state management
+[X] Getx state management
 [] shared prefference for local cachining
 
 # App Screens
 
-[x] Coin list screens
-[x] Coin details screen
-[x] Exchange Screen
+[X] Coin list screens
+[X] Coin details screen
+[X] Exchange Screen
 [] conversion Screen
 [] search screen
