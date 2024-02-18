@@ -71,8 +71,9 @@ class _ExchangecreenState extends State<Exchangecreen> {
 
   Container ExchangeCard(List<Exchange> exchange, int index) {
     return Container(
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         vertical: 10,
+        horizontal: 3,
       ),
       child: Column(
         children: [
@@ -83,7 +84,7 @@ class _ExchangecreenState extends State<Exchangecreen> {
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Container(
@@ -107,7 +108,7 @@ class _ExchangecreenState extends State<Exchangecreen> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -115,19 +116,19 @@ class _ExchangecreenState extends State<Exchangecreen> {
             children: [
               Container(
                 width: MediaQuery.of(context).size.width * 0.24,
-                child: Text("Adjusted Rank"),
+                child: const Text("Adjusted Rank"),
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.24,
-                child: Text("Reported rank"),
+                child: const Text("Reported rank"),
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.24,
-                child: Text("Markets"),
+                child: const Text("Markets"),
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.24,
-                child: Text("Currencies"),
+                child: const Text("Currencies"),
               ),
             ],
           ),
