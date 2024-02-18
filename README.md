@@ -21,7 +21,7 @@ flutter run
 
 # More information
 
-To get more information about the api we are using [click here](api.coinpaprika.com)
+To get more information about the api we are using [click here](https://api.coinpaprika.com/)
 
 # Features of application
 
